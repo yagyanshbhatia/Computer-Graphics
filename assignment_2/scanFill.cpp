@@ -275,6 +275,7 @@ void mouse_down(int button, int state, int x, int y) {
         case GLUT_LEFT_BUTTON:
             if(state == GLUT_DOWN && !DRAWING) {
                 // printf("ADDING POINT %d and %d", x, 500 - y);
+                if(numPointsDrawn>=9)return;
                 numPointsDrawn++;
                 points.push_back(pair<GLint, GLint>(x, y));
                 if (points.size() > 1) {
