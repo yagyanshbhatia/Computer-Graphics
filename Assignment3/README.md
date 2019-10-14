@@ -1,5 +1,6 @@
 1. click to form vertices
 2. Right click to form first polygon (To be clipped)
+
 Repeat above two again, for the next polygon (clipping window)
 The intersection is shown in white color. 
 
