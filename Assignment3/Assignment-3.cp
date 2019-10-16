@@ -34,10 +34,11 @@ class Point{
     GLint x,y;
     bool isIntersection;
     bool isInOut;
+    bool isValid;
     int polygonDistance;
     int clippingDistance;
-    Point() : x(0), y(0), isInOut(false), isIntersection(false), polygonDistance(0), clippingDistance(0) {}
-    Point(GLint a, GLint b) : x(a), y(b), isInOut(false), isIntersection(false), polygonDistance(0), clippingDistance(0) {}
+    Point() : x(0), y(0), isValid(true), isInOut(false), isIntersection(false), polygonDistance(0), clippingDistance(0) {}
+    Point(GLint a, GLint b) : x(a), y(b), isValid(true), isInOut(false), isIntersection(false), polygonDistance(0), clippingDistance(0) {}
 
     GLint GetX() const {
         return x;
@@ -108,6 +109,18 @@ class HelperFunctions{
         return -1;
     }
 
+    bool IsClockwisePoints(vector<Point> &Points)
+    {
+            int size = Points.size();
+            double sum = 0.0;
+            for (int i = 0; i < Points.size(); i++) {
+                Point p1 = Points[i];
+                Point p2 = Points[(i + 1) % size];
+                sum += (p2.x - p1.x) * (p2.y + p1.y);
+            }
+            return sum > 0.0;
+    }
+
     int cross(Point& p0, Point& p1, Point& p2) {
         return ((p2.x - p0.x) * (p1.y - p0.y) - (p1.x - p0.x) * (p2.y - p0.y));
     }
@@ -141,7 +154,8 @@ class HelperFunctions{
         int d4 = cross(p1, p2, p4);
 
         if (((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) && ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0))) return true;
-
+        int D = (p2.x - p1.x) * (p4.y - p3.y) - (p4.x - p3.x) * (p2.y - p1.y);
+        if (D == 0) return false;
         if (d1 == 0 && onSegment(p3, p4, p1)) return true;
         if (d2 == 0 && onSegment(p3, p4, p2)) return true;
         if (d3 == 0 && onSegment(p1, p2, p3)) return true;
@@ -155,6 +169,7 @@ class HelperFunctions{
         int b1 = (p2.y - p1.y) * p1.x + (p1.x - p2.x) * p1.y;
         int b2 = (p4.y - p3.y) * p3.x + (p3.x - p4.x) * p3.y;
         int D = (p2.x - p1.x) * (p4.y - p3.y) - (p4.x - p3.x) * (p2.y - p1.y);
+        if(D == 0) p.isValid=false;
         int D1 = b2 * (p2.x - p1.x) - b1 * (p4.x - p3.x);
         int D2 = b2 * (p2.y - p1.y) - b1 * (p4.y - p3.y);
         p.x = D1 / D;
@@ -201,9 +216,9 @@ class Polygon{
             print();
             
             // whether to reverse or not.
-            int val = helper.cross(pts[0], pts[1], pts[2]);
+            bool rotation = helper.IsClockwisePoints(pts);
             // cout << val << endl;
-            if(val < 0) {
+            if(rotation) {
                 reverse(pts.begin(), pts.end());
             }
 
@@ -344,10 +359,10 @@ class WeilerAtherton{
                 cout << "it__0 = " << it << endl;
                 gblPolygon.pts.push_back(polygonCombined[it]);
                 while(1){
+                    it = (it+1)%polygonSize;
                     if(polygonCombined[it].isIntersection && polygonCombined[it].isInOut) break;
                     if(polygonCombined[it].isIntersection && polygonCombined[it].isInOut==false) entryIndexes.erase(it);
                     gblPolygon.pts.push_back(polygonCombined[it]);
-                    it = (it+1)%polygonSize;
                 }
 
                 cout << "it__1 = " << it << endl;
