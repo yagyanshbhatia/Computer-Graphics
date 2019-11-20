@@ -92,9 +92,9 @@ void zbuffer(sphere s){
             if(distance(i,j,s) < s.radius){
                 if(depth(i,j,s) < pixelDepths[i*500+j]){
                     float x = getIllumination(i,j,depth(i,j,s),s);
-                    pixels[i*500+j].r = s.color.r * (0.01+x);
-                    pixels[i*500+j].g = s.color.g * (0.01+x);
-                    pixels[i*500+j].b = s.color.b * (0.01+x);
+                    pixels[i*500+j].r = s.color.r * (0.5+x);
+                    pixels[i*500+j].g = s.color.g * (0.5+x);
+                    pixels[i*500+j].b = s.color.b * (0.5+x);
                     pixelDepths[i*500+j] = depth(i,j,s);
                 }
             }
@@ -111,18 +111,27 @@ void drawSpheres(){
         100, //radius
         250, //x
         250, //y
-        30, //z
+        200, //z
         {1,0,0}, //color of the sphere
     };
     sphere two = {
         50,
         350,
         300,
-        60,
+        260,
         {0,1,0},
     };
+    sphere three = {
+        30, //radius
+        250, //x
+        250, //y
+        10, //z
+        {0,0,1}, //color of the sphere
+    };
+    
     allSpheres.push_back(one);
     allSpheres.push_back(two);
+    allSpheres.push_back(three);
     
     for(auto f: allSpheres){
         zbuffer(f);
