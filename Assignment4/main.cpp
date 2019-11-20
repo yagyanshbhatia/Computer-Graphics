@@ -7,33 +7,17 @@
 #include <GL/glu.h>
 #include <GL/gl.h>
 #endif
-#include<stdio.h>
+
+
 #include<bits/stdc++.h>
-#define KEY_ESC 27 /* GLUT doesn't supply this */
+float xrot = 0.0f;
 
-int fullscreen = 0;
-int mouseDown = 0;
-
-float xrot = 100.0f;
-float yrot = -100.0f;
-
-float xdiff = 100.0f;
-float ydiff = 100.0f;
-
-float tra_x = 0.0f;
-float tra_y = 0.0f;
-float tra_z = 0.0f;
-
-
-float grow_shrink = 70.0f;
-float resize_f = 1.0f;
-
-void drawBox()
+void drawTetrahedron()
 {
 
     
-    glTranslatef(tra_x, tra_y, tra_z);
-    // glColor3f(1.0f,0.0,0.0);
+    glTranslatef(0.0f, 0.0f, 0.0f);
+    // glColor3f(0.0f,1.0,0.0);
     glBegin(GL_LINE_LOOP);
 
         glVertex3f(0.5,-0.5,0.0);
@@ -43,7 +27,7 @@ void drawBox()
     glEnd();
     //draw the nose
     glBegin(GL_LINES);
-            
+        glColor3f(0.0,0.0,1.0); 
         glVertex3f(0.5,-0.5,0.0);
         glColor3f(1.0,0.0,0.0);
         glVertex3f(0.0,0.0,1.0);
@@ -60,7 +44,7 @@ void drawBox()
 
         glColor3f(0.0,0.0,1.0);
         glVertex3f(-0.5,-0.5,0.0);
-     glColor3f(1.0,0.0,0.0);
+        glColor3f(1.0,0.0,0.0);
         glVertex3f(0.0,0.0,1.0);
 
     glEnd();
@@ -69,12 +53,7 @@ void drawBox()
 
 int init(void)
 {
-    glClearColor(0.93f, 0.93f, 0.93f, 0.0f);
-
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-    glClearDepth(1.0f);
-
+    glClearColor(0.93f, 0.93f, 0.7f, 0.0f);
     return 1;
 }
 
@@ -84,13 +63,13 @@ void display(void)
     glLoadIdentity();
 
     gluLookAt(
-    2.0f, 2.0f, 1.0f,
+    2.0f, 2.0f, -1.0f,
     0.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f);
 
     glRotatef(xrot, 0.0f, 0.0f, 1.0f);
 
-    drawBox();
+    drawTetrahedron();
 
     glFlush();
     glutSwapBuffers();
@@ -101,9 +80,7 @@ void resize(int w, int h)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glViewport(0, 0, w, h);
-
-    gluPerspective(grow_shrink, resize_f * w / h, resize_f, 100 * resize_f);
+    gluPerspective(70.0f, 1.0f, 1.0f, 5.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -111,11 +88,7 @@ void resize(int w, int h)
 
 void idle(void)
 {
-    if (!mouseDown)
-    {
-        xrot += 2.0f;
-    }
-
+    xrot += 2.0f;
     glutPostRedisplay();
 }
 
@@ -140,7 +113,7 @@ int main(int argc, char *argv[])
 
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 
-    glutCreateWindow("Assignment 4.");
+    glutCreateWindow("Assignment 4");
 
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
