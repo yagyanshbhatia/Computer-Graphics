@@ -128,7 +128,7 @@ void drawSpheres(){
         10, //z
         {0,0,1}, //color of the sphere
     };
-    
+
     allSpheres.push_back(one);
     allSpheres.push_back(two);
     allSpheres.push_back(three);
