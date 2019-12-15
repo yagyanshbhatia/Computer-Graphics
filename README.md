@@ -8,7 +8,4 @@ A collection of my learnings.
 <code> ./graphics </code>
 
 ## Acknowledgements
-Credits for a lot of help and inspiration are completely due to my batchmates
-
-1. Sujoy Ghosh ([ghoshsujoy19](https://github.com/ghoshsujoy19))
-2. Shaurya Gomber ([shaurya31](https://github.com/shaurya31))
+Thanks for all the help [@ghoshsujoy19](https://github.com/ghoshsujoy19) and [@shaurya31](https://github.com/shaurya31) !
